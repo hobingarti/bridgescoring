@@ -16,6 +16,12 @@ class PertandinganController extends Controller
     public function index()
     {
         //
+        return view('pertandingan.index');
+    }
+
+    public function listPertandingan()
+    {
+        
     }
 
     /**
@@ -27,8 +33,10 @@ class PertandinganController extends Controller
     {
         //
         $pertandingan = new Pertandingan;
+        $formUrl = url('pertandingan');
+        $formMethod = 'post';
 
-        return view('pertandingan.form')->with(compact('pertandingan'));
+        return view('pertandingan.form')->with(compact('pertandingan', 'formUrl', 'formMethod'));
     }
 
     /**

@@ -50,14 +50,61 @@
                 })
             }
 
+            var validateForm = function(){
+                $('#form-pertandingan').validate({
+                    rules:{
+                        nama_pertandingan: {
+                            required: true
+                        },
+                        jumlah_board: {
+                            required: true,
+                            number: true
+                        },
+                        jumlah_pasangan: {
+                            required: true,
+                            number: true
+                        }
+                    },
+                    messages: {
+                        nama_pertandingan: {
+                            required: 'Tidak boleh kosong'
+                        },
+                        jumlah_board: {
+                            required: 'Tidak boleh kosong',
+                            number: 'Input harus berupa angka'
+                        },
+                        jumlah_pasangan: {
+                            required: 'Tidak boleh kosong',
+                            number: 'Input harus berupa angka'
+                        }
+                    },
+                    errorElement: 'span',
+                        errorPlacement: function (error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function (element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                    },
+                    unhighlight: function (element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    }
+                })
+            }
+
             var submitForm = function(){
                 $('.btn-submit-form').click(function(){
-                    $('#form-pertandingan').submit();
+                    if($('#form-pertandingan').valid()){
+                        $("#form-pertandingan").submit();
+                    }else{
+                        swal.fire('Tidak bisa menyimpan data', 'Silahkan Lengkapi isian form terlebih dahulu!', 'error');
+                    }
                 })
             }
 
             return{
                 init: function(){
+                    validateForm();
                     cancelForm();
                     submitForm();
                 }

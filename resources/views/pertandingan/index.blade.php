@@ -1,6 +1,7 @@
 @extends('app')
 
 @section('content')
+    Test
 @endsection
 
 @section('script')

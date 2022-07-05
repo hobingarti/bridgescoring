@@ -25,6 +25,8 @@
     <link rel="stylesheet" href="{{url('plugins/daterangepicker/daterangepicker.css')}}">
     <!-- summernote -->
     <link rel="stylesheet" href="{{url('plugins/summernote/summernote-bs4.min.css')}}">
+    <!-- toastr -->
+    <link rel="stylesheet" href="{{url('plugins/toastr/toastr.min.css')}}">
     @yield('style')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -903,6 +905,9 @@
 <script src="{{url('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <!-- ChartJS -->
 <script src="{{url('plugins/chart.js/Chart.min.js')}}"></script>
+<!-- ChartJS -->
+<script src="{{url('plugins/jquery-validation/jquery.validate.min.js')}}"></script>
+<script src="{{url('plugins/jquery-validation/additional-methods.min.js')}}"></script>
 <!-- Sparkline -->
 <script src="{{url('plugins/sparklines/sparkline.js')}}"></script>
 <!-- JQVMap -->
@@ -919,6 +924,10 @@
 <script src="{{url('plugins/summernote/summernote-bs4.min.js')}}"></script>
 <!-- overlayScrollbars -->
 <script src="{{url('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
+<!-- sweetalert2 -->
+<script src="{{url('plugins/sweetalert2/sweetalert2.all.min.js')}}"></script>
+<!-- toastr -->
+<script src="{{url('plugins/toastr/toastr.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{url('dist/js/adminlte.js')}}"></script>
 @yield('script')

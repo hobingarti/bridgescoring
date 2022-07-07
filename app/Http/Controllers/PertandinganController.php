@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Board;
 use App\Models\Pertandingan;
+use App\Models\Player;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
+use DB;
 
 class PertandinganController extends Controller
 {
@@ -48,6 +52,42 @@ class PertandinganController extends Controller
     public function store(Request $request)
     {
         //
+        DB::beginTransaction();
+        try {
+            $pertandingan = new Pertandingan;
+            $pertandingan->fill($request->all());
+            if($pertandingan->save()){
+                // create boards
+                for ($i=1; $i <= $pertandingan->jumlah_board ; $i++) { 
+                    $board = new Board;
+                    $board->id_pertandingan = $pertandingan->id;
+                    $board->nomor_board = $i;
+                    $board->save();
+                }
+
+                for ($i=1; $i <= $pertandingan->jumlah_pasangan ; $i++) { 
+                    $player = new Player;
+                    $player->id_pertandingan = $pertandingan->id;
+                    $player->nama_player = '';
+                    $player->nomor_player = $i;
+                    $player->save();
+                }
+            }
+            
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            print_r($e->getMessage());
+        }
+    }
+
+    public function managePlayers(Pertandingan $pertandingan)
+    {
+        $formMethod = 'post';
+        $formUrl = url('pertandingan/updatePlayers');
+
+        return view('pertandingan.managePlayers')->with(compact('pertandingan', 'formMethod', 'formUrl'));
     }
 
     /**

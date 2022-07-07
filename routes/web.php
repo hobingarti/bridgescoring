@@ -21,4 +21,5 @@ use App\Http\Controllers\PertandinganController;
 
 Route::get('/', [HomeController::class, 'index']);
 Route::resource('pertandingan', PertandinganController::class);
+Route::get('pertandingan/{pertandingan}/managePlayers', [PertandinganController::class, 'managePlayers']);
 

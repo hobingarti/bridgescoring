@@ -85,9 +85,23 @@ class PertandinganController extends Controller
     public function managePlayers(Pertandingan $pertandingan)
     {
         $formMethod = 'post';
-        $formUrl = url('pertandingan/updatePlayers');
+        $formUrl = url('pertandingan/'.$pertandingan->id.'/updatePlayers');
 
         return view('pertandingan.managePlayers')->with(compact('pertandingan', 'formMethod', 'formUrl'));
+    }
+
+    public function updatePlayers(Pertandingan $pertandingan, Request $request)
+    {
+        foreach ($request->nama_player as $key => $nama_player) {
+            $player = Player::find($key);
+            if($player->id_pertandingan == $pertandingan->id)
+            {
+                $player->nama_player = $nama_player;
+                $player->save();
+            }
+        }
+
+        return redirect(url('pertandingan/'.$pertandingan->id.'/managePlayers'));
     }
 
     /**

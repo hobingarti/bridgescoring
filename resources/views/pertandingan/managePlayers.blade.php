@@ -10,24 +10,26 @@
                 </div>
                 {!! Form::open(array('url' => $formUrl, 'method'=>$formMethod, 'files' => true, 'id'=>'form-pertandingan')) !!}
                     <div class="card-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th style="width: 10px">#</th>
-                                <th>Nama Pasangan</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($pertandingan->players as $key => $players)
+                        <table class="table">
+                            <thead>
                                 <tr>
-                                    <td>{{ $key+1 }}</td>
-                                    <td>
-                                        <input type="text" name="nama[{{ $key }}]" class="form-control nama-players" required>
-                                    </td>
+                                    <th style="width: 10px">#</th>
+                                    <th>Nama Pasangan</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach($pertandingan->players as $key => $player)
+                                    <tr>
+                                        <td>{{ $key+1 }}</td>
+                                        <td>
+                                            <div class="form-group">
+                                                {!! Form::text('nama_player['.$player->id.']', $player->nama_player, ['class'=>'form-control nama-player', 'id'=>'nama_player_'.$player->id]) !!}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                     <div class="card-footer">
                         <button type="button" class="btn btn-danger btn-cancel-form"> <i class="fa fa-times"></i> Batal</button>
@@ -64,6 +66,10 @@
                         jumlah_pasangan: {
                             required: true,
                             number: true
+                        },
+                        nama: {
+                            required: true,
+                            minlength: 3
                         }
                     },
                     messages: {
@@ -90,6 +96,12 @@
                     unhighlight: function (element, errorClass, validClass) {
                         $(element).removeClass('is-invalid');
                     }
+                })
+
+                $.validator.addMethod("nRequired", $.validator.methods.required, "Nama Pasangan tidak boleh kosong");
+
+                $.validator.addClassRules('nama-player',{
+                    nRequired: true
                 })
             }
 

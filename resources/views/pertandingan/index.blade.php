@@ -12,6 +12,7 @@
                     <table class="table table-bordered datatable" id="dTable">
                         <thead>
                             <tr>
+                                <th>No</th>
                                 <th>Tanggal</th>
                                 <th>Nama Pertandingan</th>
                                 <th>Jumlah Pasangan</th>
@@ -38,18 +39,17 @@
                 serverSide: true,
                 stateSave: true,
                 ajax:{
-                        url: '{{url("kuisioner/list_kuisioner")}}',
+                        url: '{{url("pertandingan/listPertandingan")}}',
                         data:function(d){
-                                d.nama_kuisioner = $("#q_nama_kuisioner").val();
-                                d.id_jenis_kuisioner = $("#q_id_jenis_kuisioner").val();
-                                d.id_tahun_ajar = $("#q_id_tahun_ajar").val();
+                                // d.nama_kuisioner = $("#q_nama_kuisioner").val();
                             }
                     },
                 columns: [
-                    {data: 'no', name: 'id',width:"2%"},
-                    {data: 'id_tahun_ajar', name: 'id_tahun_ajar'},
-                    {data: 'nama_kuisioner', name: 'nama_kuisioner'},
-                    {data: 'nama_jenis_kuisioner', name: 'nama_jenis_kuisioner'},
+                    {data: 'no', name: 'id', width:"2%", searchable: false},
+                    {data: 'tanggal', name: 'tanggal'},
+                    {data: 'nama_pertandingan', name: 'nama_pertandingan'},
+                    {data: 'jumlah_pasangan', name: 'jumlah_pasangan'},
+                    {data: 'jumlah_board', name: 'jumlah_board'},
                     {data: 'action', name: 'id',orderable: false, searchable: false, class:'text-center'}
                 ],
                 scrollX: true,

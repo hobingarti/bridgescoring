@@ -20,7 +20,8 @@ use App\Http\Controllers\PertandinganController;
 // });
 
 Route::get('/', [HomeController::class, 'index']);
-Route::resource('pertandingan', PertandinganController::class);
+Route::get('pertandingan/listPertandingan', [PertandinganController::class, 'listPertandingan']);
 Route::get('pertandingan/{pertandingan}/managePlayers', [PertandinganController::class, 'managePlayers']);
 Route::post('pertandingan/{pertandingan}/updatePlayers', [PertandinganController::class, 'updatePlayers']);
+Route::resource('pertandingan', PertandinganController::class);
 

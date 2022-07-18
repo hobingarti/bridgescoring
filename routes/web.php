@@ -23,5 +23,6 @@ Route::get('/', [HomeController::class, 'index']);
 Route::get('pertandingan/listPertandingan', [PertandinganController::class, 'listPertandingan']);
 Route::get('pertandingan/{pertandingan}/managePlayers', [PertandinganController::class, 'managePlayers']);
 Route::post('pertandingan/{pertandingan}/updatePlayers', [PertandinganController::class, 'updatePlayers']);
+Route::get('pertandingan/{pertandingan}/boards', [PertandinganController::class, 'boards']);
 Route::resource('pertandingan', PertandinganController::class);
 

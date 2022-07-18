@@ -38,7 +38,8 @@ class PertandinganController extends Controller
 
         return Datatables::of($data)
             ->addColumn('action', function($data){
-                return '<a href="'.url('pertandingan/'.$data->id.'/edit').'" class="btn btn-primary btn-xs"> <i class="fa fa-edit"></i> Edit </a>';
+                return '<a href="'.url('pertandingan/'.$data->id.'/edit').'" class="btn btn-primary btn-xs"> <i class="fa fa-wrench"></i> Edit </a>
+                        <a href="'.url('pertandingan/'.$data->id.'/boards').'" class="btn btn-primary btn-xs"> <i class="fa fa-edit "></i> Score</a>';
             })
             ->make(true);
 
@@ -164,6 +165,11 @@ class PertandinganController extends Controller
         return redirect(url('pertandingan/'.$pertandingan->id.'/managePlayers'));
     }
 
+    public function boards(Pertandingan $pertandingan, Request $request)
+    {
+        
+    }
+
     /**
      * Display the specified resource.
      *
@@ -183,7 +189,10 @@ class PertandinganController extends Controller
      */
     public function edit(Pertandingan $pertandingan)
     {
-        //
+        $formUrl = url('pertandingan/'.$pertandingan->id);
+        $formMethod = 'put';
+
+        return view('pertandingan.form')->with(compact('pertandingan', 'formUrl', 'formMethod'));
     }
 
     /**
@@ -196,6 +205,10 @@ class PertandinganController extends Controller
     public function update(Request $request, Pertandingan $pertandingan)
     {
         //
+        $pertandingan->fill($request->only('nama_pertandingan', 'tanggal'));
+        $pertandingan->save();
+
+        return redirect('pertandingan/'.$pertandingan->id.'/edit');
     }
 
     /**

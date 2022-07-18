@@ -14,17 +14,21 @@
                 {!! Form::open(array('url' => $formUrl, 'method'=>$formMethod, 'files' => true, 'id'=>'form-pertandingan')) !!}
                     <div class="card-body">
                         <div class="row">
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-6">
                                 <label for="nama_pertandingan">Nama Pertandingan</label>
                                 {!! Form::text('nama_pertandingan', $pertandingan->nama_pertandingan, ['id'=>'nama_pertandingan', 'class'=>'form-control', 'required'=>"required"]) !!}
                             </div>
                             <div class="form-group col-md-6">
+                                <label for="nama_pertandingan">Tanggal</label>
+                                {!! Form::text('tanggal', $pertandingan->tanggal, ['id'=>'tanggal', 'class'=>'form-control datepicker', 'required'=>"required"]) !!}
+                            </div>
+                            <div class="form-group col-md-6">
                                 <label for="jumlah_pasangan">Jumlah Pasangan</label>
-                                {!! Form::number('jumlah_pasangan', $pertandingan->jumlah_pasangan, ['id'=>'jumlah_pasangan', 'class'=>'form-control', 'required'=>'required']) !!}
+                                {!! Form::number('jumlah_pasangan', $pertandingan->jumlah_pasangan, ['id'=>'jumlah_pasangan', 'class'=>'form-control', 'required'=>'required', 'disabled'=>($pertandingan->id != '' ? true : false)]) !!}
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="jumlah_board">Jumlah Board</label>
-                                {!! Form::number('jumlah_board', $pertandingan->jumlah_board, ['id'=>'jumlah_board', 'class'=>'form-control', 'required'=>'required']) !!}
+                                {!! Form::number('jumlah_board', $pertandingan->jumlah_board, ['id'=>'jumlah_board', 'class'=>'form-control', 'required'=>'required', 'disabled'=>($pertandingan->id != '' ? true : false)]) !!}
                             </div>
                         </div>
                     </div>
@@ -107,6 +111,18 @@
                     validateForm();
                     cancelForm();
                     submitForm();
+
+                    $(".datepicker").daterangepicker({
+                        locale: {
+                            format: 'DD/MM/YYYY'
+                        },
+                        format: 'DD/MM/YYYY',
+                        autoclose: true,
+                        todayBtn: false,
+                        timePicker: false,
+                        timePicker24Hour: true,
+                        singleDatePicker: true, //<==HERE
+                    });
                 }
             }
         }()

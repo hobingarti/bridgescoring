@@ -23,8 +23,7 @@
                     </table>
                 </div>
                 <div class="card-footer">
-                    <button type="button" class="btn btn-danger btn-cancel-form"> <i class="fa fa-times"></i> Batal</button>
-                    <button type="button" class="btn btn-primary btn-submit-form float-right"> <i class="fa fa-save"></i> Submit</button>
+                    
                 </div>
             </div>
         </div>

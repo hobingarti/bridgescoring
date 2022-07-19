@@ -167,7 +167,7 @@ class PertandinganController extends Controller
 
     public function boards(Pertandingan $pertandingan, Request $request)
     {
-        
+        return view('pertandingan.boards')->with(compact('pertandingan'));
     }
 
     /**

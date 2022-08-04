@@ -59,6 +59,7 @@ class BoardController extends Controller
     public function edit(Board $board)
     {
         //
+        return view('board.form')->with(compact('board'));
     }
 
     /**

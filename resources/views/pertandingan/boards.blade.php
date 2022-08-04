@@ -9,7 +9,21 @@
                     Data Pertandingan
                 </div>
                 <div class="card-body">
-                    Daftar Board
+                    <h4>Daftar Board</h4>
+                    <div class="row">
+                        @foreach($pertandingan->boards as $board)
+                            <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
+                                <div class="card card-info">
+                                    <div class="card-header">
+                                        Board {{ $board->nomor_board }}
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <a href="{{url('board/'.$board->id.'/edit')}}" class="btn btn-xs btn-info"> <i class="fa fa-edit"></i> Input Score</a>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
                 <div class="card-footer">
                     

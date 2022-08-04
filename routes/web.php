@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\BoardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PertandinganController;
 /*
@@ -25,4 +26,5 @@ Route::get('pertandingan/{pertandingan}/managePlayers', [PertandinganController:
 Route::post('pertandingan/{pertandingan}/updatePlayers', [PertandinganController::class, 'updatePlayers']);
 Route::get('pertandingan/{pertandingan}/boards', [PertandinganController::class, 'boards']);
 Route::resource('pertandingan', PertandinganController::class);
+Route::resource('board', BoardController::class);
 

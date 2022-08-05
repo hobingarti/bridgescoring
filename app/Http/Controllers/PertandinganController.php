@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Board;
+use App\Models\Match;
 use App\Models\Pertandingan;
 use App\Models\Player;
 use App\Http\Controllers\Controller;
@@ -136,10 +137,14 @@ class PertandinganController extends Controller
             }
             
             DB::commit();
+
+            return redirect('pertandingan/'.$pertandingan->id.'/boards');
         } catch (\Exception $e) {
             DB::rollback();
 
             print_r($e->getMessage());
+
+            return redirect('pertandingan/create');
         }
     }
 
@@ -220,5 +225,48 @@ class PertandinganController extends Controller
     public function destroy(Pertandingan $pertandingan)
     {
         //
+    }
+
+    public function ranks(Pertandingan $pertandingan)
+    {
+        $arrBoard = array();
+        $boards = $pertandingan->boards;
+        foreach($boards as $board)
+        {
+            $arrBoards[$board->nomor_board] = '-';
+        }
+
+        $arrPlayers = array();
+        $players = $pertandingan->players;
+        foreach($players as $player)
+        {
+            $arrPlayers[$player->id]['player'] = $player;
+            $arrPlayers[$player->id]['nomor_player'] = $player->nomor_player;
+            $arrPlayers[$player->id]['boards'] = $arrBoards;
+            $arrPlayers[$player->id]['total_score'] = 0;
+        }
+
+        $matches = Match::leftJoin('boards', 'boards.id', 'matches.id_board')
+                        ->where('boards.id_pertandingan', '=', $pertandingan->id)
+                        ->select('matches.*', 'boards.nomor_board')
+                        ->get();
+        foreach($matches as $match)
+        {
+            if($match->id_pemain_ns != 0){
+                $arrPlayers[$match->id_pemain_ns]['boards'][$match->nomor_board] = $match->point_ns;
+                $arrPlayers[$match->id_pemain_ns]['total_score'] += $match->point_ns;
+            }
+
+            if($match->id_pemain_ew != 0){
+                $arrPlayers[$match->id_pemain_ew]['boards'][$match->nomor_board] = $match->point_ew;
+                $arrPlayers[$match->id_pemain_ew]['total_score'] += $match->point_ew;
+            }
+        }        
+
+        // echo "<pre>";
+        // print_r($arrPlayers);
+        // exit();
+
+        return view('pertandingan.ranks')->with(compact('arrPlayers', 'arrBoards', 'pertandingan'));
     }
 }

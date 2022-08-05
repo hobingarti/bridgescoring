@@ -5,10 +5,18 @@
         <div class="col-md-12">
             <div class="card card-primary">
                 <div class="card-header">
+                    <a href="{{ url('pertandingan') }}"><i class="fa fa-chevron-left text-danger"></i> Pertandingan </a> |
                     <i class="fa fa-calculator"></i>
-                    Data Pertandingan
+                    Boards : {{ $pertandingan->nama_pertandingan }}
                 </div>
                 <div class="card-body">
+                    <h4>Opsi</h4>
+                    <div class="row" style="margin-bottom:10px;">
+                        <div class="col-lg-12">
+                            <a href="{{ url('pertandingan/'.$pertandingan->id.'/managePlayers') }}" class="btn btn-primary">Nama Pemain</a> 
+                            <a href="{{ url('pertandingan/'.$pertandingan->id.'/ranks') }}" class="btn btn-primary">Ranking Pemain</a>
+                        </div>
+                    </div>
                     <h4>Daftar Board</h4>
                     <div class="row">
                         @foreach($pertandingan->boards as $board)

@@ -8,6 +8,7 @@
         <div class="col-md-12">
             <div class="card card-primary">
                 <div class="card-header">
+                <a href="{{ url('pertandingan/') }}"><i class="fa fa-chevron-left text-danger"></i> Pertandingan </a> |
                     <i class="fa fa-calculator"></i>
                     Data Pertandingan
                 </div>

@@ -1,46 +1,52 @@
 @extends('app')
 
+@section('style')
+@endsection
+
 @section('content')
     <div class="container-fluid">
         <div class="col-md-12">
-            <div class="card card-primary">
+            <div class="card">
                 <div class="card-header">
-                    <a href="{{ url('pertandingan/'.$pertandingan->id.'/boards') }}"><i class="fa fa-chevron-left text-danger"></i> Pertandingan </a> |
-                    <i class="fa fa-calculator"></i>
-                    Data Pemain
+                    <h3 class="card-title"> <a href="{{ url('pertandingan/'.$pertandingan->id.'/boards') }}"><i class="fa fa-chevron-left text-danger"></i> Pertandingan </a> | Ranking</h3>
                 </div>
-                {!! Form::open(array('url' => $formUrl, 'method'=>$formMethod, 'files' => true, 'id'=>'form-pertandingan')) !!}
-                    <div class="card-body">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th style="width: 10px">#</th>
-                                    <th>Nama Pasangan</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($pertandingan->players as $key => $player)
-                                    <tr>
-                                        <td>{{ $key+1 }}</td>
-                                        <td>
-                                            <div class="form-group">
-                                                {!! Form::text('nama_player['.$player->id.']', $player->nama_player, ['class'=>'form-control nama-player', 'id'=>'nama_player_'.$player->id]) !!}
-                                            </div>
-                                        </td>
-                                    </tr>
+
+                <div class="card-body p-0">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="width: 10px">#</th>
+                                <th style="width: 200px;">Player</th>
+                                <th style="width: 100px;">Total Score</th>
+                                @foreach($arrBoards as $keyB => $board)
+                                    <th style="width: 100px;">{{ $keyB }}</th>
                                 @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="card-footer">
-                        <button type="button" class="btn btn-danger btn-cancel-form"> <i class="fa fa-times"></i> Batal</button>
-                        <button type="button" class="btn btn-primary btn-submit-form float-right"> <i class="fa fa-save"></i> Submit</button>
-                    </div>
-                {!! Form::close() !!}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($arrPlayers as $keyP => $player)
+                                <tr>
+                                    <td>{{ $keyP }}.</td>
+                                    <td>{{ $player['player']->nama_player }}</td>
+                                    <td><span class="badge bg-success">{{ $player['total_score'] }}</span></td>
+                                    @foreach($player['boards'] as $keyB => $pointBoard)
+                                        <td>
+                                            @if($pointBoard === '-')
+                                                <span class="badge bg-secondary">-</span>
+                                            @else
+                                                <span class="badge bg-primary">{{ $pointBoard }}</span>
+                                            @endif
+                                        </td>
+                                    @endforeach
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-@endsection()
+@endsection
 
 @section('script')
     <script type="text/javascript">
@@ -55,7 +61,7 @@
             }
 
             var validateForm = function(){
-                $('#form-pertandingan').validate({
+                $('#form-board').validate({
                     rules:{
                         nama_pertandingan: {
                             required: true
@@ -67,10 +73,6 @@
                         jumlah_pasangan: {
                             required: true,
                             number: true
-                        },
-                        nama: {
-                            required: true,
-                            minlength: 3
                         }
                     },
                     messages: {
@@ -98,18 +100,12 @@
                         $(element).removeClass('is-invalid');
                     }
                 })
-
-                $.validator.addMethod("nRequired", $.validator.methods.required, "Nama Pasangan tidak boleh kosong");
-
-                $.validator.addClassRules('nama-player',{
-                    nRequired: true
-                })
             }
 
             var submitForm = function(){
                 $('.btn-submit-form').click(function(){
-                    if($('#form-pertandingan').valid()){
-                        $("#form-pertandingan").submit();
+                    if($('#form-board').valid()){
+                        $("#form-board").submit();
                     }else{
                         swal.fire('Tidak bisa menyimpan data', 'Silahkan Lengkapi isian form terlebih dahulu!', 'error');
                     }
@@ -121,6 +117,18 @@
                     validateForm();
                     cancelForm();
                     submitForm();
+
+                    $(".datepicker").daterangepicker({
+                        locale: {
+                            format: 'DD/MM/YYYY'
+                        },
+                        format: 'DD/MM/YYYY',
+                        autoclose: true,
+                        todayBtn: false,
+                        timePicker: false,
+                        timePicker24Hour: true,
+                        singleDatePicker: true, //<==HERE
+                    });
                 }
             }
         }()
@@ -129,4 +137,4 @@
             handleForm.init();
         })
     </script>
-@endsection()
+@endsection

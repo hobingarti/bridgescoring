@@ -31,4 +31,18 @@ class Pertandingan extends Model
     {
         return $value == '' ? '' : Carbon::parse($value)->format('d/m/Y');
     }
+
+    public function getMatchMaxCountAttribute()
+    {
+        $playersCount = $this->players->count();
+        $matchsMaxCount = ceil($playersCount/2);
+        return $matchsMaxCount;
+    }
+
+    public function getMatchMaxCountByeAttribute()
+    {
+        $playersCount = $this->players->count();
+        $matchsMaxCount = floor($playersCount/2);
+        return $matchsMaxCount;
+    }
 }

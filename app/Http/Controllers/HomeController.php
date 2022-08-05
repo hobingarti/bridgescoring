@@ -13,6 +13,7 @@ class HomeController extends Controller
     //
     public function index()
     {
+        return redirect('pertandingan');
         $pertandingans = Pertandingan::all();
         return view('home.index')->with(compact('pertandingans'));
     }

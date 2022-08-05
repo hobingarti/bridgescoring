@@ -9,6 +9,7 @@
                     Data Pertandingan
                 </div>
                 <div class="card-body">
+                    <a href="{{ url('pertandingan/create') }}" class="btn btn-success"> <i class="fa fa-plus"></i> Buat Pertandingan</a>
                     <table class="table table-bordered datatable" id="dTable">
                         <thead>
                             <tr>

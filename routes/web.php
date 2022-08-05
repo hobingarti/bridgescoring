@@ -25,6 +25,7 @@ Route::get('pertandingan/listPertandingan', [PertandinganController::class, 'lis
 Route::get('pertandingan/{pertandingan}/managePlayers', [PertandinganController::class, 'managePlayers']);
 Route::post('pertandingan/{pertandingan}/updatePlayers', [PertandinganController::class, 'updatePlayers']);
 Route::get('pertandingan/{pertandingan}/boards', [PertandinganController::class, 'boards']);
+Route::get('pertandingan/{pertandingan}/ranks', [PertandinganController::class, 'ranks']);
 Route::resource('pertandingan', PertandinganController::class);
 Route::resource('board', BoardController::class);
 

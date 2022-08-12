@@ -11,7 +11,7 @@
                     <h3 class="card-title"> <a href="{{ url('pertandingan/'.$pertandingan->id.'/boards') }}"><i class="fa fa-chevron-left text-danger"></i> Pertandingan </a> | Ranking</h3>
                 </div>
 
-                <div class="card-body p-0">
+                <div class="card-body p-0" style="overflow:auto;">
                     <table class="table">
                         <thead>
                             <tr>

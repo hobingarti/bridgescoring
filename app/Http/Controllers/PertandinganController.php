@@ -300,6 +300,28 @@ class PertandinganController extends Controller
             $sheet->setCellValue($frontLetter.$backLetter.'1', $board->nomor_board);
         }
 
+        $arrPoints = array();
+        $matches = Match::leftJoin('boards', 'boards.id', 'matches.id_board')
+                        ->leftJoin(DB::raw('players as players_ns'), 'players_ns.id', 'matches.id_pemain_ns')
+                        ->leftJoin(DB::raw('players as players_ew'), 'players_ew.id', 'matches.id_pemain_ew')
+                        ->where('boards.id_pertandingan', '=', $pertandingan->id)
+                        ->select('matches.*', 'boards.nomor_board', DB::raw('players_ns.nomor_player AS nomor_player_ns'), DB::raw('players_ew.nomor_player AS nomor_player_ew'))
+                        ->get();
+
+        foreach ($matches as $key => $match) {
+            if($match->id_pemain_ns > 0){
+                $arrPoints[$match->nomor_player_ns][$match->nomor_board] = $match->point_ns;
+            }
+            
+            if($match->id_pemain_ew > 0){
+                $arrPoints[$match->nomor_player_ew][$match->nomor_board] = $match->point_ew;
+            }
+        }
+
+        // echo "<pre>";
+        // print_r($arrPoints);
+        // exit();
+
         $rowNo = 1;
         foreach($pertandingan->players as $key => $player)
         {
@@ -308,7 +330,24 @@ class PertandinganController extends Controller
             $sheet->setCellValue('B'.$rowNo, $player->nama_player);
             $sheet->setCellValue('C'.$rowNo, $player->total_point);
             
-            
+            if(array_key_exists($player->nomor_player, $arrPoints)){
+                foreach($pertandingan->boards as $key => $board){
+                    $frontP = intdiv(($board->nomor_board+$keyAdder), 26);
+                    $backP = ($board->nomor_board+$keyAdder) % 26;
+
+                    if($frontP < 1){
+                        $frontLetter = '';
+                    }else{
+                        $frontLetter = chr(64+$frontP);
+                    }
+
+                    $backLetter = chr(65+$backP);
+                    
+                    if(array_key_exists($board->nomor_board, $arrPoints[$player->nomor_player])){
+                        $sheet->setCellValue($frontLetter.$backLetter.$rowNo, $arrPoints[$player->nomor_player][$board->nomor_board]);
+                    }
+                }
+            }
         }
 
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, "Xlsx");

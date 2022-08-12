@@ -47,6 +47,7 @@ class Board extends Model
                 if($matchBye->id_pemain_ew == 0){
                     $matchBye->point_ns = $point;
                     $matchBye->point_ew = 0;
+                    $point = $point-2;
                 }else{
                     $matchBye->point_ns = 0;
                     $matchBye->point_ew = $point;
@@ -57,9 +58,9 @@ class Board extends Model
                 $matchBye->point_ns = 0;
                 $matchBye->point_ew = 0;
                 $matchBye->save();
-            }
 
-            $point = $point-2;
+                $point = $point-2;
+            }
         }
 
         // refit points for matches

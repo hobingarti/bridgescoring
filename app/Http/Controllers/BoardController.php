@@ -79,14 +79,14 @@ class BoardController extends Controller
         }
 
         // pembuatan link next prev board
-        $minBoard = $pertandingan->boards->min('nomor_board');
-        $maxBoard = $pertandingan->boards->max('nomor_board');
+        $minBoard = $pertandingan->boards->min('id');
+        $maxBoard = $pertandingan->boards->max('id');
 
-        $nextBoard = $board->nomor_board + 1;
-        $prevBoard = $board->nomor_board - 1;
-        if($board->nomor_board == $minBoard){
+        $nextBoard = $board->id + 1;
+        $prevBoard = $board->id - 1;
+        if($board->id == $minBoard){
             $prevBoard = $maxBoard;
-        }elseif($board->nomor_board == $maxBoard){
+        }elseif($board->id == $maxBoard){
             $nextBoard = $minBoard;
         }
 

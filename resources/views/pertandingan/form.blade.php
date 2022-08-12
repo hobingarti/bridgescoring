@@ -31,6 +31,10 @@
                                 <label for="jumlah_board">Jumlah Board</label>
                                 {!! Form::number('jumlah_board', $pertandingan->jumlah_board, ['id'=>'jumlah_board', 'class'=>'form-control', 'required'=>'required', 'disabled'=>($pertandingan->id != '' ? true : false)]) !!}
                             </div>
+                            <div class="form-group col-md-6">
+                                <label for="jumlah_board">Jenis Bye</label>
+                                {!! Form::select('id_jenis_bye', ['1'=>'Skor Menang', '2'=>'Skor Kosong'] ,$pertandingan->id_jenis_bye, ['id'=>'id_jenis_bye', 'class'=>'form-control', 'required'=>'required', 'disabled'=>($pertandingan->id != '' ? true : false)]) !!}
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer">

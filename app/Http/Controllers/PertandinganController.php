@@ -12,6 +12,10 @@ use Illuminate\Http\Request;
 use DB;
 use Datatables;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\IWriter;
+
 class PertandinganController extends Controller
 {
     /**
@@ -268,5 +272,48 @@ class PertandinganController extends Controller
         // exit();
 
         return view('pertandingan.ranks')->with(compact('arrPlayers', 'arrBoards', 'pertandingan'));
+    }
+
+    public function ranksExcel(Pertandingan $pertandingan)
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'Pasangan');
+        $sheet->setCellValue('C1', 'Total Skor');
+        
+        $keyAdder = 2;
+        $keyP = 0;
+        foreach($pertandingan->boards as $key => $board){
+            $keyP++;
+            $frontP = intdiv(($keyP+$keyAdder), 26);
+            $backP = ($keyP+$keyAdder) % 26;
+
+            if($frontP < 1){
+                $frontLetter = '';
+            }else{
+                $frontLetter = chr(64+$frontP);
+            }
+
+            $backLetter = chr(65+$backP);
+            $sheet->setCellValue($frontLetter.$backLetter.'1', $board->nomor_board);
+        }
+
+        $rowNo = 1;
+        foreach($pertandingan->players as $key => $player)
+        {
+            $rowNo++;
+            $sheet->setCellValue('A'.$rowNo, $player->nomor_player);
+            $sheet->setCellValue('B'.$rowNo, $player->nama_player);
+            $sheet->setCellValue('C'.$rowNo, $player->total_point);
+            
+            
+        }
+
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, "Xlsx");
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="Rank '.$pertandingan->nama_pertandingan.'.xlsx"');
+        $writer->save("php://output");
     }
 }

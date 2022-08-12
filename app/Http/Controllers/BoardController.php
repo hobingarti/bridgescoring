@@ -111,7 +111,7 @@ class BoardController extends Controller
                 $match = new Match;
             }
 
-            if($dataMatch['score_ns'] != ''){
+            if($dataMatch['score_ns'] != '' && $dataMatch['id_pemain_ns'] != '' && $dataMatch['id_pemain_ew'] != ''){
                 $match->id_pemain_ns = $dataMatch['id_pemain_ns'];
                 $match->id_pemain_ew = $dataMatch['id_pemain_ew'];
                 $match->score_ns = $dataMatch['score_ns'];

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Pertandingan extends Model
 {
     use HasFactory;
-    protected $fillable = ['nama_pertandingan', 'jumlah_pasangan', 'jumlah_board', 'tanggal'];
+    protected $fillable = ['nama_pertandingan', 'jumlah_pasangan', 'jumlah_board', 'tanggal', 'id_jenis_bye'];
 
     public function players()
     {

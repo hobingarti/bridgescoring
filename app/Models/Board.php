@@ -23,22 +23,58 @@ class Board extends Model
 
     public function processPoint()
     {
-        $maxPoint =  $this->pertandingan->match_max_count_bye*2-2;
-
-        $matches = Match::where('id_board', '=', $this->id)->where('id_pemain_ns', '!=', 0)->where('id_pemain_ew', '!=', 0)->orderBy('score_ns', 'DESC')->get();
+        $id_jenis_bye = $this->pertandingan->id_jenis_bye;
         $arrScore = array();
+        $matches = Match::where('id_board', '=', $this->id)
+                        ->where('id_pemain_ns', '!=', 0)
+                        ->where('id_pemain_ew', '!=', 0)
+                        ->orderBy('score_ns', 'DESC')
+                        ->get()->keyBy('id');
+        $maxPoint = $this->matches->count()*2-2;
         $point = $maxPoint;
-        foreach($matches as $i => $match){
-            $arrScore[$match->score_ns][$i] = $point;
+
+        // pengisian matchbye 
+        $matchBye = Match::where('id_board', '=', $this->id)
+                        ->where(function($q){
+                            $q->where('id_pemain_ns', '=', 0);
+                            $q->orWhere('id_pemain_ew', '=', 0);
+                        })
+                        ->orderBy('score_ns', 'DESC')
+                        ->first();
+        
+        if($matchBye){
+            if($id_jenis_bye == 1){
+                if($matchBye->id_pemain_ew == 0){
+                    $matchBye->point_ns = $point;
+                    $matchBye->point_ew = 0;
+                }else{
+                    $matchBye->point_ns = 0;
+                    $matchBye->point_ew = $point;
+                }
+                $matchBye->save();
+            }else{
+                $maxPoint = $maxPoint-2;
+                $matchBye->point_ns = 0;
+                $matchBye->point_ew = 0;
+                $matchBye->save();
+            }
+
+            $point = $point-2;
+        }
+
+        // refit points for matches
+        foreach($matches as $key => $match){
+            $arrScore[$match->score_ns][$key] = $point;
             $point = $point - 2;
         }
 
+        // redistribute point if same score exists
         foreach($arrScore as $scoreCluster){
-            $sumNilai = 0;
+            $sumPoint = 0;
             foreach($scoreCluster as $point){
-                $sumNilai = $sumNilai + $point;
+                $sumPoint = $sumPoint + $point;
             }
-            $finalPoint = $sumNilai/count($scoreCluster);
+            $finalPoint = $sumPoint/count($scoreCluster);
             // echo $finalPoint;
             foreach($scoreCluster as $index => $point){
                 $matches[$index]->point_ns = $finalPoint;
@@ -46,16 +82,5 @@ class Board extends Model
                 $matches[$index]->save();
             }
         }
-
-        Match::where('id_board', '=', $this->id)
-            ->where(function($q){
-                $q->orWhere('id_pemain_ns', '=', 0);
-                $q->orWhere('id_pemain_ew', '=', 0);
-            })
-            ->update(['point_ns'=>0, 'point_ew'=>0]);
-
-        // echo "<pre>";
-        // print_r($arrScore);
-        // exit();
     }
 }

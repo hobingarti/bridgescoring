@@ -13,6 +13,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "laravelcollective/html": "^6.3",
+        "phpoffice/phpspreadsheet": "^1.24",
         "yajra/laravel-datatables-oracle": "^9.21"
     },
     "require-dev": {

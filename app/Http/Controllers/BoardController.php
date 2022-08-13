@@ -7,6 +7,8 @@ use App\Models\Match;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use DB;
+
 class BoardController extends Controller
 {
     /**
@@ -103,24 +105,33 @@ class BoardController extends Controller
     public function update(Request $request, Board $board)
     {
         //
-        $dataMatchs = $request->match;
-        foreach($dataMatchs as $dataMatch){
-            if($dataMatch['id'] != ''){
-                $match = Match::find($dataMatch['id']);
-            }else{
-                $match = new Match;
+        DB::beginTransaction();
+        try {
+            //code...
+            $dataMatchs = $request->match;
+            foreach($dataMatchs as $dataMatch){
+                if($dataMatch['id'] != ''){
+                    $match = Match::find($dataMatch['id']);
+                }else{
+                    $match = new Match;
+                }
+
+                if($dataMatch['score_ns'] != '' && $dataMatch['id_pemain_ns'] != '' && $dataMatch['id_pemain_ew'] != ''){
+                    $match->id_pemain_ns = $dataMatch['id_pemain_ns'];
+                    $match->id_pemain_ew = $dataMatch['id_pemain_ew'];
+                    $match->score_ns = $dataMatch['score_ns'];
+                    $match->id_board = $board->id;
+                    $match->save();
+                }
             }
 
-            if($dataMatch['score_ns'] != '' && $dataMatch['id_pemain_ns'] != '' && $dataMatch['id_pemain_ew'] != ''){
-                $match->id_pemain_ns = $dataMatch['id_pemain_ns'];
-                $match->id_pemain_ew = $dataMatch['id_pemain_ew'];
-                $match->score_ns = $dataMatch['score_ns'];
-                $match->id_board = $board->id;
-                $match->save();
-            }
-        }
+            $board->processPoint();
 
-        $board->processPoint();
+            DB::commit();
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollback();
+        }        
 
         return redirect('board/'.$board->id.'/edit');
     }

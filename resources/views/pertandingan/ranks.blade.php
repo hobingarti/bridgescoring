@@ -9,6 +9,9 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title"> <a href="{{ url('pertandingan/'.$pertandingan->id.'/boards') }}"><i class="fa fa-chevron-left text-danger"></i> Pertandingan </a> | Ranking</h3>
+                    <div class="card-tools">
+                        <a href="{{ url('pertandingan/'.$pertandingan->id.'/ranksExcel') }}" class="btn btn-success btn-sm"> <i class="fa fa-file-excel"></i> Download Excel</a>
+                    </div>
                 </div>
 
                 <div class="card-body p-0" style="overflow:auto;">

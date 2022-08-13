@@ -31,13 +31,13 @@
                                 <tr>
                                     <td>{{ $keyP }}.</td>
                                     <td>{{ $player['player']->nama_player }}</td>
-                                    <td><span class="badge bg-success">{{ $player['total_score'] }}</span></td>
+                                    <td><b>{{ $player['total_score'] }}</b></td>
                                     @foreach($player['boards'] as $keyB => $pointBoard)
                                         <td>
                                             @if($pointBoard === '-')
-                                                <span class="badge bg-secondary">-</span>
+                                                -
                                             @else
-                                                <span class="badge bg-primary">{{ $pointBoard }}</span>
+                                                {{ $pointBoard }}
                                             @endif
                                         </td>
                                     @endforeach
